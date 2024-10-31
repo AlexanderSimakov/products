@@ -7,12 +7,14 @@ class ProductCard extends StatelessWidget {
     required this.product,
     required this.withShadow,
     required this.backgroundColor,
+    required this.onFavoriteChanged,
     super.key,
   });
 
   final Product product;
   final bool withShadow;
   final Color backgroundColor;
+  final ValueChanged<bool> onFavoriteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +75,9 @@ class ProductCard extends StatelessWidget {
                 Align(
                   alignment: Alignment.topRight,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      onFavoriteChanged(!product.isFavorite);
+                    },
                     child: Icon(
                       product.isFavorite
                           ? Icons.favorite

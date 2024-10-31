@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card.dart';
 
 class RecomendedBlock extends StatelessWidget {
   const RecomendedBlock({
-    required this.products,
     super.key,
   });
-
-  final List<Product> products;
 
   @override
   Widget build(BuildContext context) {
@@ -28,20 +27,35 @@ class RecomendedBlock extends StatelessWidget {
         SizedBox(
           height: 180,
           child: Center(
-            child: ListView.builder(
-              shrinkWrap: true,
-              scrollDirection: Axis.horizontal,
-              itemCount: products.length,
-              itemBuilder: (context, index) => Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
-                ),
-                child: ProductCard(
-                  product: products[index],
-                  withShadow: true,
-                  backgroundColor: Colors.white,
-                ),
-              ),
+            child: BlocSelector<ProductsBloc, ProductsState, List<Product>>(
+              selector: (state) {
+                return state.recommendedProducts;
+              },
+              builder: (context, recommendedProducts) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  scrollDirection: Axis.horizontal,
+                  itemCount: recommendedProducts.length,
+                  itemBuilder: (context, index) => Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                    ),
+                    child: ProductCard(
+                      product: recommendedProducts[index],
+                      withShadow: true,
+                      backgroundColor: Colors.white,
+                      onFavoriteChanged: (isFavorite) {
+                        context.read<ProductsBloc>().add(
+                              ToggleFavorite(
+                                id: recommendedProducts[index].id,
+                                isFavorite: isFavorite,
+                              ),
+                            );
+                      },
+                    ),
+                  ),
+                );
+              },
             ),
           ),
         ),

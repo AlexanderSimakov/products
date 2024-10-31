@@ -14,6 +14,7 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   })  : _productsInteractor = productsInteractor,
         super(const ProductsInitial()) {
     on<_ProductsLoaded>(_onProductsLoaded);
+    on<ToggleFavorite>(_onToggleFavorite);
     _initListeners();
   }
 
@@ -51,5 +52,30 @@ class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
         recommendedProducts: _productsInteractor.recommendedProducts.value,
       ),
     );
+  }
+
+  Future<void> _onToggleFavorite(
+    ToggleFavorite event,
+    Emitter<ProductsState> emit,
+  ) async {
+    try {
+      await _productsInteractor.toggleFavorite(
+        event.id,
+        isFavorite: event.isFavorite,
+      );
+    } catch (e) {
+      emit(
+        ProductsError(
+          products: _productsInteractor.products.value,
+          recommendedProducts: _productsInteractor.recommendedProducts.value,
+        ),
+      );
+      emit(
+        ProductsLoading(
+          products: state.products,
+          recommendedProducts: state.recommendedProducts,
+        ),
+      );
+    }
   }
 }

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_basket/src/features/basket/data/data_source/products_data_source_impl.dart';
+import 'package:product_basket/src/features/basket/data/repository/products_repository_impl.dart';
+import 'package:product_basket/src/features/basket/domain/interactor/products_interactor.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/page/basket_page.dart';
 
 void main() {
@@ -10,13 +15,25 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: Colors.deepPurple,
+    return RepositoryProvider<ProductsInteractor>(
+      create: (context) => ProductsInteractor(
+        repository: ProductsRepositoryImpl(
+          dataSource: ProductsDataSourceImpl(),
         ),
       ),
-      home: const BasketPage(),
+      child: MaterialApp(
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+            seedColor: Colors.deepPurple,
+          ),
+        ),
+        home: BlocProvider(
+          create: (context) => ProductsBloc(
+            productsInteractor: context.read<ProductsInteractor>(),
+          ),
+          child: const BasketPage(),
+        ),
+      ),
     );
   }
 }

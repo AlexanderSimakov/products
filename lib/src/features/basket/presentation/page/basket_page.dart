@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:product_basket/src/features/basket/domain/model/price.dart';
-import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/basket_button.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/custom_app_bar.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/filter_button.dart';
@@ -50,26 +48,7 @@ class BasketPage extends StatelessWidget {
               ),
             ),
             Spacer(),
-            RecomendedBlock(
-              products: [
-                Product(
-                  id: '1',
-                  name: 'Combo',
-                  price: Price(100, r'$'),
-                  imageUrl:
-                      'https://clipart-library.com/image_gallery2/Salad-PNG-Image.png',
-                  isFavorite: false,
-                ),
-                Product(
-                  id: '2',
-                  name: 'Combo',
-                  price: Price(100, r'$'),
-                  imageUrl:
-                      'https://static.vecteezy.com/system/resources/thumbnails/018/128/193/small/delicious-spinach-salad-with-fresh-png.png',
-                  isFavorite: false,
-                ),
-              ],
-            ),
+            RecomendedBlock(),
             Spacer(),
             ProductByCategoryBlock(),
           ],

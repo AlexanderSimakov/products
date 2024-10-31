@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:product_basket/src/features/basket/domain/model/price.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card.dart';
 
 class ProductByCategoryBlock extends StatelessWidget {
@@ -10,10 +11,10 @@ class ProductByCategoryBlock extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        _Categories(
+        const _Categories(
           categories: [
             'Hottest',
             'Popular',
@@ -22,34 +23,16 @@ class ProductByCategoryBlock extends StatelessWidget {
           ],
           selectedCategoryIndex: 0,
         ),
-        SizedBox(height: 16),
-        _Products(
-          products: [
-            Product(
-              id: '1',
-              name: 'Product 1',
-              price: Price(100, r'$'),
-              imageUrl:
-                  'https://www.pngplay.com/wp-content/uploads/15/Salads-PNG-HD-Quality.png',
-              isFavorite: false,
-            ),
-            Product(
-              id: '2',
-              name: 'Product 2',
-              price: Price(100, r'$'),
-              imageUrl:
-                  'https://www.chipotle.com/content/dam/chipotle/menu/meal-types/salad/web-mobile/order.png',
-              isFavorite: false,
-            ),
-            Product(
-              id: '3',
-              name: 'Product 3',
-              price: Price(100, r'$'),
-              imageUrl:
-                  'https://www.hungryhowies.com/sites/default/files/2022-08/HH_Website_Menu_Detail_Page_Garden_Salad_0.png',
-              isFavorite: false,
-            ),
-          ],
+        const SizedBox(height: 16),
+        BlocSelector<ProductsBloc, ProductsState, List<Product>>(
+          selector: (state) {
+            return state.products;
+          },
+          builder: (context, products) {
+            return _Products(
+              products: products,
+            );
+          },
         ),
       ],
     );
@@ -162,6 +145,14 @@ class _Products extends StatelessWidget {
             product: products[index],
             withShadow: false,
             backgroundColor: _colors[index % _colors.length].withOpacity(0.05),
+            onFavoriteChanged: (isFavorite) {
+              context.read<ProductsBloc>().add(
+                    ToggleFavorite(
+                      id: products[index].id,
+                      isFavorite: isFavorite,
+                    ),
+                  );
+            },
           ),
         ),
       ),
