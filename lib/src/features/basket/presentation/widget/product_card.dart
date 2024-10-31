@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -67,6 +69,12 @@ class ProductCard extends StatelessWidget {
                         _ProductPrice(price: product.price),
                         _AddToBasketButton(
                           product: product,
+                          onTap: () {
+                            print('Add to basket: ${product.name}');
+                            context
+                                .read<BasketBloc>()
+                                .add(AddToBasket(product));
+                          },
                         ),
                       ],
                     ),
@@ -99,9 +107,11 @@ class ProductCard extends StatelessWidget {
 class _AddToBasketButton extends StatelessWidget {
   const _AddToBasketButton({
     required this.product,
+    required this.onTap,
   });
 
   final Product product;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +119,7 @@ class _AddToBasketButton extends StatelessWidget {
       height: 24,
       width: 24,
       child: GestureDetector(
-        onTap: () {},
+        onTap: onTap,
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: const Color(0xFFFFF2E7),

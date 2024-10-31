@@ -36,7 +36,7 @@ class ProductsDataSourceImpl implements ProductsDataSource {
     String id, {
     required bool isFavorite,
   }) async {
-    await Future<void>.delayed(const Duration(milliseconds: 300));
+    await Future<void>.delayed(const Duration(milliseconds: 100));
 
     _products = _products
         .map(

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
-import 'package:product_basket/src/features/basket/presentation/bloc/products_bloc.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card.dart';
 
 class ProductByCategoryBlock extends StatelessWidget {

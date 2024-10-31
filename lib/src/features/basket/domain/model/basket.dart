@@ -3,7 +3,7 @@ import 'package:product_basket/src/features/basket/domain/model/product.dart';
 
 @immutable
 class Basket {
-  const Basket(this.products);
+  const Basket([this.products = const []]);
 
   final List<Product> products;
 
