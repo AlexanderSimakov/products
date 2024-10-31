@@ -1,4 +1,5 @@
 import 'package:meta/meta.dart';
+import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 
 @immutable
@@ -9,6 +10,7 @@ class Product {
     required this.price,
     required this.imageUrl,
     required this.isFavorite,
+    required this.category,
   });
 
   final String id;
@@ -16,6 +18,7 @@ class Product {
   final Price price;
   final String imageUrl;
   final bool isFavorite;
+  final Category category;
 
   Product copyWith({
     String? id,
@@ -23,6 +26,7 @@ class Product {
     Price? price,
     String? imageUrl,
     bool? isFavorite,
+    Category? category,
   }) {
     return Product(
       id: id ?? this.id,
@@ -30,6 +34,7 @@ class Product {
       price: price ?? this.price,
       imageUrl: imageUrl ?? this.imageUrl,
       isFavorite: isFavorite ?? this.isFavorite,
+      category: category ?? this.category,
     );
   }
 
@@ -39,7 +44,8 @@ class Product {
       name.hashCode ^
       price.hashCode ^
       imageUrl.hashCode ^
-      isFavorite.hashCode;
+      isFavorite.hashCode ^
+      category.hashCode;
 
   @override
   bool operator ==(Object other) =>
@@ -50,5 +56,6 @@ class Product {
           name == other.name &&
           price == other.price &&
           imageUrl == other.imageUrl &&
-          isFavorite == other.isFavorite;
+          isFavorite == other.isFavorite &&
+          category == other.category;
 }

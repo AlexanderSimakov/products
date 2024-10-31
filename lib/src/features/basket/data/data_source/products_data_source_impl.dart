@@ -3,6 +3,8 @@ import 'package:product_basket/src/features/basket/domain/model/price.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:rxdart/rxdart.dart';
 
+import '../../domain/model/category.dart';
+
 class ProductsDataSourceImpl implements ProductsDataSource {
   ProductsDataSourceImpl() {
     Future.delayed(const Duration(milliseconds: 500), () {
@@ -61,6 +63,7 @@ List<Product> _products = [
     price: Price(100, r'$'),
     imageUrl: 'https://clipart-library.com/image_gallery2/Salad-PNG-Image.png',
     isFavorite: false,
+    category: Category.hottest,
   ),
   const Product(
     id: '2',
@@ -69,6 +72,7 @@ List<Product> _products = [
     imageUrl:
         'https://static.vecteezy.com/system/resources/thumbnails/018/128/193/small/delicious-spinach-salad-with-fresh-png.png',
     isFavorite: false,
+    category: Category.popular,
   ),
   const Product(
     id: '3',
@@ -77,22 +81,69 @@ List<Product> _products = [
     imageUrl:
         'https://www.pngplay.com/wp-content/uploads/15/Salads-PNG-HD-Quality.png',
     isFavorite: false,
+    category: Category.newCombo,
   ),
   const Product(
-    id: '3',
+    id: '4',
     name: 'Product 2',
     price: Price(100, r'$'),
     imageUrl:
         'https://www.chipotle.com/content/dam/chipotle/menu/meal-types/salad/web-mobile/order.png',
     isFavorite: false,
+    category: Category.top,
   ),
   const Product(
-    id: '4',
+    id: '5',
     name: 'Product 3',
     price: Price(100, r'$'),
     imageUrl:
         'https://www.hungryhowies.com/sites/default/files/2022-08/HH_Website_Menu_Detail_Page_Garden_Salad_0.png',
     isFavorite: false,
+    category: Category.hottest,
+  ),
+  const Product(
+    id: '6',
+    name: 'Combo',
+    price: Price(100, r'$'),
+    imageUrl: 'https://clipart-library.com/image_gallery2/Salad-PNG-Image.png',
+    isFavorite: false,
+    category: Category.popular,
+  ),
+  const Product(
+    id: '7',
+    name: 'Combo',
+    price: Price(100, r'$'),
+    imageUrl:
+        'https://static.vecteezy.com/system/resources/thumbnails/018/128/193/small/delicious-spinach-salad-with-fresh-png.png',
+    isFavorite: false,
+    category: Category.newCombo,
+  ),
+  const Product(
+    id: '8',
+    name: 'Product 1',
+    price: Price(100, r'$'),
+    imageUrl:
+        'https://www.pngplay.com/wp-content/uploads/15/Salads-PNG-HD-Quality.png',
+    isFavorite: false,
+    category: Category.top,
+  ),
+  const Product(
+    id: '9',
+    name: 'Product 2',
+    price: Price(100, r'$'),
+    imageUrl:
+        'https://www.chipotle.com/content/dam/chipotle/menu/meal-types/salad/web-mobile/order.png',
+    isFavorite: false,
+    category: Category.hottest,
+  ),
+  const Product(
+    id: '10',
+    name: 'Product 3',
+    price: Price(100, r'$'),
+    imageUrl:
+        'https://www.hungryhowies.com/sites/default/files/2022-08/HH_Website_Menu_Detail_Page_Garden_Salad_0.png',
+    isFavorite: false,
+    category: Category.popular,
   ),
 ];
 

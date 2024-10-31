@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
+import 'package:product_basket/src/features/basket/presentation/utils/category_extension.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card.dart';
 
-class ProductByCategoryBlock extends StatelessWidget {
+class ProductByCategoryBlock extends StatefulWidget {
   const ProductByCategoryBlock({
     super.key,
   });
+
+  @override
+  State<ProductByCategoryBlock> createState() => _ProductByCategoryBlockState();
+}
+
+class _ProductByCategoryBlockState extends State<ProductByCategoryBlock> {
+  Category _selectedCategory = Category.hottest;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const _Categories(
-          categories: [
-            'Hottest',
-            'Popular',
-            'New combo',
-            'Top',
+        _Categories<Category>(
+          categories: const [
+            Category.hottest,
+            Category.popular,
+            Category.newCombo,
+            Category.top,
           ],
-          selectedCategoryIndex: 0,
+          categoryToText: (category) => category.toText(),
+          selectedCategory: _selectedCategory,
+          onChanged: (category) => setState(() {
+            _selectedCategory = category;
+          }),
         ),
         const SizedBox(height: 16),
         BlocSelector<ProductsBloc, ProductsState, List<Product>>(
@@ -30,7 +43,9 @@ class ProductByCategoryBlock extends StatelessWidget {
           },
           builder: (context, products) {
             return _Products(
-              products: products,
+              products: products
+                  .where((product) => product.category == _selectedCategory)
+                  .toList(),
             );
           },
         ),
@@ -39,14 +54,18 @@ class ProductByCategoryBlock extends StatelessWidget {
   }
 }
 
-class _Categories extends StatelessWidget {
+class _Categories<T> extends StatelessWidget {
   const _Categories({
     required this.categories,
-    required this.selectedCategoryIndex,
+    required this.categoryToText,
+    required this.selectedCategory,
+    required this.onChanged,
   });
 
-  final List<String> categories;
-  final int selectedCategoryIndex;
+  final List<T> categories;
+  final String Function(T) categoryToText;
+  final T selectedCategory;
+  final ValueChanged<T> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -57,14 +76,17 @@ class _Categories extends StatelessWidget {
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
+          final category = categories[index];
+
           return Align(
             child: Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
               ),
-              child: Category(
-                title: categories[index],
-                isSelected: index == selectedCategoryIndex,
+              child: CategoryItem(
+                title: categoryToText(category),
+                isSelected: selectedCategory == category,
+                onTap: () => onChanged(category),
               ),
             ),
           );
@@ -74,41 +96,46 @@ class _Categories extends StatelessWidget {
   }
 }
 
-class Category extends StatelessWidget {
-  const Category({
+class CategoryItem extends StatelessWidget {
+  const CategoryItem({
     required this.title,
     required this.isSelected,
+    required this.onTap,
     super.key,
   });
 
   final String title;
   final bool isSelected;
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: isSelected ? 24 : 16,
-            fontWeight: FontWeight.w500,
-            color: isSelected ? Colors.black : const Color(0xFF938DB5),
-          ),
-        ),
-        if (isSelected)
-          const DecoratedBox(
-            decoration: BoxDecoration(
-              color: Color(0xFFFFA451),
-            ),
-            child: SizedBox(
-              height: 3,
-              width: 36,
+    return GestureDetector(
+      onTap: onTap,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: isSelected ? 24 : 16,
+              fontWeight: FontWeight.w500,
+              color: isSelected ? Colors.black : const Color(0xFF938DB5),
             ),
           ),
-      ],
+          if (isSelected)
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                color: Color(0xFFFFA451),
+              ),
+              child: SizedBox(
+                height: 3,
+                width: 36,
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
