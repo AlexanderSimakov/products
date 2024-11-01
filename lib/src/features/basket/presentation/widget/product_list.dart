@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card/product_card.dart';
-import 'package:product_basket/src/features/basket/presentation/widget/product_card/shimmer_product_card.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/shimmer_product_list.dart';
-import 'package:shimmer/shimmer.dart';
 
-class ColoredProductList extends StatelessWidget {
-  const ColoredProductList({
+class ProductList extends StatelessWidget {
+  const ProductList({
     required this.products,
+    required this.isColored,
     super.key,
   });
 
   final List<Product> products;
+  final bool isColored;
 
   static final List<Color> _colors = [
     Colors.red,
@@ -37,19 +38,23 @@ class ColoredProductList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: products.length,
         itemBuilder: (context, index) {
+          final product = products[index];
+
           return Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: 8,
             ),
             child: ProductCard(
-              product: products[index],
-              withShadow: false,
-              backgroundColor:
-                  _colors[index % _colors.length].withOpacity(0.05),
-              onFavoriteChanged: (isFavorite) {
+              key: ObjectKey(product),
+              product: product,
+              withShadow: !isColored,
+              backgroundColor: isColored
+                  ? _colors[index % _colors.length].withOpacity(0.05)
+                  : context.colorScheme.surface,
+              onIsFavoriteChanged: (isFavorite) {
                 context.read<ProductsBloc>().add(
                       ProductsToggleFavorite(
-                        products[index].id,
+                        product.id,
                         isFavorite: isFavorite,
                       ),
                     );

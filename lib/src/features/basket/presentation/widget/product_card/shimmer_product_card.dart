@@ -7,7 +7,6 @@ class ShimmerProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final width = (MediaQuery.sizeOf(context).width - 90) / 2;
     final width = MediaQuery.sizeOf(context).width / 2.7;
 
     return SizedBox(

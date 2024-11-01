@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class GreetingText extends StatelessWidget {
-  const GreetingText({
+class GreetingModule extends StatelessWidget {
+  const GreetingModule({
     required this.userName,
     super.key,
   });
@@ -19,12 +19,10 @@ class GreetingText extends StatelessWidget {
         ),
         children: [
           TextSpan(text: 'Hello $userName, '),
-          TextSpan(
+          const TextSpan(
             text: 'What fruit salad combo do you want today?',
             style: TextStyle(
-              fontSize: 20,
               fontWeight: FontWeight.w400,
-              color: Theme.of(context).colorScheme.onSurface,
             ),
           ),
         ],

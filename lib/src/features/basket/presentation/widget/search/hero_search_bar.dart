@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
-import 'package:product_basket/src/features/basket/presentation/widget/app_search_bar.dart';
+import 'package:product_basket/src/features/basket/presentation/widget/search/app_search_bar.dart';
 
 class HeroSearchBar extends StatelessWidget {
   const HeroSearchBar({
     this.onTap,
-    this.onSearchQueryChanged,
-    this.onSearchFilterChanged,
-    this.requestFocus = false,
+    this.onQueryChanged,
+    this.onFilterChanged,
     this.initialFilter,
     super.key,
   });
 
   final VoidCallback? onTap;
-  final ValueChanged<String>? onSearchQueryChanged;
-  final ValueChanged<List<Category>>? onSearchFilterChanged;
+  final ValueChanged<String>? onQueryChanged;
+  final ValueChanged<List<Category>>? onFilterChanged;
   final List<Category>? initialFilter;
-  final bool requestFocus;
 
   @override
   Widget build(BuildContext context) {
@@ -30,10 +28,9 @@ class HeroSearchBar extends StatelessWidget {
           child: Material(
             type: MaterialType.transparency,
             child: AppSearchBar(
-              onSearchQueryChanged: onSearchQueryChanged,
-              requestFocus: requestFocus,
+              onQueryChanged: onQueryChanged,
               initialFilter: initialFilter,
-              onSearchFilterChanged: onSearchFilterChanged,
+              onFilterChanged: onFilterChanged,
             ),
           ),
         ),

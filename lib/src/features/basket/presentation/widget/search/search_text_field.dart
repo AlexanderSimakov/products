@@ -1,22 +1,17 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:product_basket/src/common/constants/app_assets.dart';
+part of 'app_search_bar.dart';
 
-class SearchTextField extends StatefulWidget {
-  const SearchTextField({
+class _SearchTextField extends StatefulWidget {
+  const _SearchTextField({
     this.onChanged,
-    this.requestFocus = false,
-    super.key,
   });
 
   final ValueChanged<String>? onChanged;
-  final bool requestFocus;
 
   @override
-  State<SearchTextField> createState() => _SearchTextFieldState();
+  State<_SearchTextField> createState() => _SearchTextFieldState();
 }
 
-class _SearchTextFieldState extends State<SearchTextField> {
+class _SearchTextFieldState extends State<_SearchTextField> {
   late final TextEditingController _controller;
 
   @override
@@ -36,7 +31,6 @@ class _SearchTextFieldState extends State<SearchTextField> {
     return TextFormField(
       controller: _controller,
       onChanged: widget.onChanged,
-      autofocus: widget.requestFocus,
       decoration: InputDecoration(
         prefixIconConstraints: const BoxConstraints.tightFor(
           height: 24,

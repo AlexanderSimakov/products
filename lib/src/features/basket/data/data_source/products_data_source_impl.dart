@@ -19,7 +19,7 @@ class ProductsDataSourceImpl implements ProductsDataSource {
       callback: () => _recommendedProductsSubject.add(
         [
           ..._products
-              .where((product) => _recommendedProductIds.contains(product.id))
+              .where((product) => _recommendedProductIds.contains(product.id)),
         ],
       ),
     );

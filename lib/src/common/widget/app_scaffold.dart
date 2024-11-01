@@ -19,7 +19,6 @@ class AppScaffold extends StatelessWidget {
     return Scaffold(
       appBar: appBar,
       resizeToAvoidBottomInset: resizeToAvoidBottomInset,
-      backgroundColor: Colors.white,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
         child: body,

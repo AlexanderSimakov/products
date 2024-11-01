@@ -1,9 +1,8 @@
 part of 'product_card.dart';
 
-class ProductPrice extends StatelessWidget {
-  const ProductPrice({
+class _ProductPrice extends StatelessWidget {
+  const _ProductPrice({
     required this.price,
-    super.key,
   });
 
   final Price price;
@@ -13,10 +12,10 @@ class ProductPrice extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: '${price.currency} ',
-        style: const TextStyle(
+        style: TextStyle(
           fontSize: 16,
           fontWeight: FontWeight.w500,
-          color: Color(0xFFFFA451),
+          color: context.colorScheme.primary,
         ),
         children: [
           TextSpan(

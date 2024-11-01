@@ -1,7 +1,7 @@
 part of 'product_category_list.dart';
 
-class ProductCategoryListItem extends StatelessWidget {
-  const ProductCategoryListItem({
+class _ProductCategoryListItem extends StatelessWidget {
+  const _ProductCategoryListItem({
     required this.title,
     required this.isSelected,
     required this.onTap,
@@ -25,7 +25,9 @@ class ProductCategoryListItem extends StatelessWidget {
             style: TextStyle(
               fontSize: isSelected ? 24 : 16,
               fontWeight: FontWeight.w500,
-              color: isSelected ? Colors.black : const Color(0xFF938DB5),
+              color: isSelected
+                  ? context.colorScheme.onSurface
+                  : context.colorScheme.onSurfaceVariant,
             ),
           ),
           if (isSelected)

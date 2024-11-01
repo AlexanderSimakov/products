@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product_basket/src/common/constants/app_assets.dart';
+import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/common/widget/chip_multi_selector.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/presentation/utils/category_extension.dart';
@@ -49,15 +50,14 @@ class FilterButton extends StatelessWidget {
                   height: 16,
                   padding: const EdgeInsets.all(2),
                   decoration: BoxDecoration(
-                    color: Colors.red,
+                    color: context.colorScheme.error,
                     borderRadius: BorderRadius.circular(24),
                   ),
                   child: FittedBox(
                     child: Text(
                       initialFilter!.length.toString(),
-                      style: const TextStyle(
-                        color: Colors.white,
-                        // fontSize: 10,
+                      style: TextStyle(
+                        color: context.colorScheme.onError,
                       ),
                     ),
                   ),

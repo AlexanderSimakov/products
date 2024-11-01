@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
@@ -14,18 +15,17 @@ class ProductCard extends StatelessWidget {
     required this.product,
     required this.withShadow,
     required this.backgroundColor,
-    required this.onFavoriteChanged,
+    required this.onIsFavoriteChanged,
     super.key,
   });
 
   final Product product;
   final bool withShadow;
   final Color backgroundColor;
-  final ValueChanged<bool> onFavoriteChanged;
+  final ValueChanged<bool> onIsFavoriteChanged;
 
   @override
   Widget build(BuildContext context) {
-    // final width = (MediaQuery.sizeOf(context).width - 90) / 2;
     final width = MediaQuery.sizeOf(context).width / 2.7;
 
     return SizedBox(
@@ -39,7 +39,7 @@ class ProductCard extends StatelessWidget {
             boxShadow: withShadow
                 ? [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
+                      color: Colors.grey.withOpacity(0.25),
                       blurRadius: 30,
                       offset: const Offset(0, 12),
                     ),
@@ -92,9 +92,8 @@ class ProductCard extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ProductPrice(price: product.price),
-                        AddToBasketButton(
-                          product: product,
+                        _ProductPrice(price: product.price),
+                        _AddToBasketButton(
                           onTap: () {
                             context
                                 .read<BasketBloc>()
@@ -109,7 +108,7 @@ class ProductCard extends StatelessWidget {
                   alignment: Alignment.topRight,
                   child: GestureDetector(
                     onTap: () {
-                      onFavoriteChanged(!product.isFavorite);
+                      onIsFavoriteChanged(!product.isFavorite);
                     },
                     child: Icon(
                       product.isFavorite

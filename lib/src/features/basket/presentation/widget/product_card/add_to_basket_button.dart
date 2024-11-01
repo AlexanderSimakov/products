@@ -1,13 +1,10 @@
 part of 'product_card.dart';
 
-class AddToBasketButton extends StatelessWidget {
-  const AddToBasketButton({
-    required this.product,
+class _AddToBasketButton extends StatelessWidget {
+  const _AddToBasketButton({
     required this.onTap,
-    super.key,
   });
 
-  final Product product;
   final VoidCallback onTap;
 
   @override
@@ -22,10 +19,10 @@ class AddToBasketButton extends StatelessWidget {
             color: const Color(0xFFFFF2E7),
             borderRadius: BorderRadius.circular(24),
           ),
-          child: const Icon(
+          child: Icon(
             Icons.add,
             size: 20,
-            color: Color(0xFFFFA451),
+            color: context.colorScheme.primary,
           ),
         ),
       ),

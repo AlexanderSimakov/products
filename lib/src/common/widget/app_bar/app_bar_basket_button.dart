@@ -2,18 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product_basket/src/common/constants/app_assets.dart';
+import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/common/widget/popup/popup.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
 
-class BasketButton extends StatelessWidget {
-  const BasketButton({
+class AppBarBasketButton extends StatelessWidget {
+  const AppBarBasketButton({
     super.key,
   });
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<BasketBloc, BasketState>(
-      builder: (context, state) {
+    return BlocSelector<BasketBloc, BasketState, int>(
+      selector: (state) => state.basket.products.length,
+      builder: (context, productsCount) {
         return Popup(
           followerAnchor: Alignment.topLeft,
           follower: (context, controller) {
@@ -29,12 +31,20 @@ class BasketButton extends StatelessWidget {
               },
               child: DecoratedBox(
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
+                  color: context.colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: const Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Text('Basket is empty'),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  child: Text(
+                    'Basket is empty',
+                    style: TextStyle(
+                      color: context.colorScheme.onPrimaryContainer,
+                    ),
+                  ),
                 ),
               ),
             );
@@ -42,7 +52,7 @@ class BasketButton extends StatelessWidget {
           child: (context, portalController) {
             return GestureDetector(
               onTap: () {
-                if (state.basket.products.isEmpty) {
+                if (productsCount == 0) {
                   portalController.show();
                 } else {
                   context.read<BasketBloc>().add(const BasketClear());
@@ -57,6 +67,10 @@ class BasketButton extends StatelessWidget {
                         AppAssets.basketSvgIcon,
                         width: 24,
                         height: 24,
+                        colorFilter: ColorFilter.mode(
+                          context.colorScheme.primary,
+                          BlendMode.srcIn,
+                        ),
                       ),
                       const Text(
                         'My Basket',
@@ -66,23 +80,22 @@ class BasketButton extends StatelessWidget {
                       ),
                     ],
                   ),
-                  if (state.basket.products.isNotEmpty)
+                  if (productsCount > 0)
                     Positioned(
                       right: 0,
                       child: Container(
-                        width: 18,
-                        height: 18,
+                        width: 16,
+                        height: 16,
                         padding: const EdgeInsets.all(2),
                         decoration: BoxDecoration(
-                          color: Colors.red,
+                          color: context.colorScheme.error,
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: FittedBox(
                           child: Text(
-                            state.basket.products.length.toString(),
-                            style: const TextStyle(
-                              color: Colors.white,
-                              // fontSize: 10,
+                            productsCount.toString(),
+                            style: TextStyle(
+                              color: context.colorScheme.onError,
                             ),
                           ),
                         ),

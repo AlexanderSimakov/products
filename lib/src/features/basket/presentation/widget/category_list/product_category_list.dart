@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:product_basket/src/common/extension/theme_extension.dart';
+import 'package:product_basket/src/features/basket/domain/model/category.dart';
+import 'package:product_basket/src/features/basket/presentation/utils/category_extension.dart';
 
 part 'product_category_list_item.dart';
 
-class ProductCategoryList<T> extends StatelessWidget {
+class ProductCategoryList extends StatelessWidget {
   const ProductCategoryList({
     required this.categories,
-    required this.categoryToText,
     required this.selectedCategory,
     required this.onChanged,
     super.key,
   });
 
-  final List<T> categories;
-  final String Function(T) categoryToText;
-  final T selectedCategory;
-  final ValueChanged<T> onChanged;
+  final List<Category> categories;
+  final Category selectedCategory;
+  final ValueChanged<Category> onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -32,8 +33,9 @@ class ProductCategoryList<T> extends StatelessWidget {
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
               ),
-              child: ProductCategoryListItem(
-                title: categoryToText(category),
+              child: _ProductCategoryListItem(
+                key: ObjectKey(category),
+                title: category.toText(),
                 isSelected: selectedCategory == category,
                 onTap: () => onChanged(category),
               ),

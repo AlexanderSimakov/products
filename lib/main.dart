@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:product_basket/src/common/constants/app_assets.dart';
 import 'package:product_basket/src/common/utils/svg_cache_util.dart';
 import 'package:product_basket/src/features/basket/data/data_source/basket_data_source_impl.dart';
 import 'package:product_basket/src/features/basket/data/data_source/products_data_source_impl.dart';
@@ -52,7 +50,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.deepPurple,
+            seedColor: const Color(0xFFFFA451),
+            primary: const Color(0xFFFFA451),
+            surface: Colors.white,
           ),
         ),
         home: const ProductsBlocScope(

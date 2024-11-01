@@ -3,20 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
-import 'package:product_basket/src/features/basket/presentation/utils/category_extension.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/category_list/product_category_list.dart';
-import 'package:product_basket/src/features/basket/presentation/widget/colored_product_list.dart';
+import 'package:product_basket/src/features/basket/presentation/widget/product_list.dart';
 
-class ProductByCategoryBlock extends StatefulWidget {
-  const ProductByCategoryBlock({
+class ProductByCategoryModule extends StatefulWidget {
+  const ProductByCategoryModule({
     super.key,
   });
 
   @override
-  State<ProductByCategoryBlock> createState() => _ProductByCategoryBlockState();
+  State<ProductByCategoryModule> createState() =>
+      _ProductByCategoryModuleState();
 }
 
-class _ProductByCategoryBlockState extends State<ProductByCategoryBlock> {
+class _ProductByCategoryModuleState extends State<ProductByCategoryModule> {
   Category _selectedCategory = Category.hottest;
 
   @override
@@ -24,14 +24,8 @@ class _ProductByCategoryBlockState extends State<ProductByCategoryBlock> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ProductCategoryList<Category>(
-          categories: const [
-            Category.hottest,
-            Category.popular,
-            Category.newCombo,
-            Category.top,
-          ],
-          categoryToText: (category) => category.toText(),
+        ProductCategoryList(
+          categories: Category.values,
           selectedCategory: _selectedCategory,
           onChanged: (category) => setState(() {
             _selectedCategory = category;
@@ -43,10 +37,11 @@ class _ProductByCategoryBlockState extends State<ProductByCategoryBlock> {
             return state.products;
           },
           builder: (context, products) {
-            return ColoredProductList(
+            return ProductList(
               products: products
                   .where((product) => product.category == _selectedCategory)
                   .toList(),
+              isColored: true,
             );
           },
         ),
