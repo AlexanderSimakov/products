@@ -62,7 +62,7 @@ class ProductsDataSourceImpl implements ProductsDataSource {
     return List.generate(count, (index) {
       return Product(
         id: index.toString(),
-        name: '${names[index % names.length]} $index',
+        name: '${names[index % names.length]} ${index + 1}',
         price: Price(prices[index % prices.length], r'$'),
         imageUrl: images[index % images.length],
         isFavorite: false,

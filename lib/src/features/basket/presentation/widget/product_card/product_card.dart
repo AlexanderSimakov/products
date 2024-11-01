@@ -1,8 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
+import 'package:shimmer/shimmer.dart';
+
+part 'add_to_basket_button.dart';
+part 'product_price.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -49,31 +54,51 @@ class ProductCard extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const SizedBox(height: 8),
-                    Image.network(
-                      product.imageUrl,
+                    CachedNetworkImage(
+                      imageUrl: product.imageUrl,
                       height: 80,
                       width: 80,
                       fit: BoxFit.contain,
+                      progressIndicatorBuilder: (_, __, ___) {
+                        return Shimmer.fromColors(
+                          baseColor: Colors.grey.shade300,
+                          highlightColor: Colors.grey.shade200,
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(40),
+                            ),
+                            child: const SizedBox(
+                              height: 60,
+                              width: 60,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                    Text(
-                      product.name,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
+                    SizedBox(
+                      height: 26,
+                      child: FittedBox(
+                        child: Text(
+                          product.name,
+                          style: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _ProductPrice(price: product.price),
-                        _AddToBasketButton(
+                        ProductPrice(price: product.price),
+                        AddToBasketButton(
                           product: product,
                           onTap: () {
-                            print('Add to basket: ${product.name}');
                             context
                                 .read<BasketBloc>()
-                                .add(AddToBasket(product));
+                                .add(BasketAddProduct(product));
                           },
                         ),
                       ],
@@ -99,69 +124,6 @@ class ProductCard extends StatelessWidget {
             ),
           ),
         ),
-      ),
-    );
-  }
-}
-
-class _AddToBasketButton extends StatelessWidget {
-  const _AddToBasketButton({
-    required this.product,
-    required this.onTap,
-  });
-
-  final Product product;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 24,
-      width: 24,
-      child: GestureDetector(
-        onTap: onTap,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF2E7),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: const Icon(
-            Icons.add,
-            size: 20,
-            color: Color(0xFFFFA451),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ProductPrice extends StatelessWidget {
-  const _ProductPrice({
-    required this.price,
-  });
-
-  final Price price;
-
-  @override
-  Widget build(BuildContext context) {
-    return RichText(
-      text: TextSpan(
-        text: '${price.currency} ',
-        style: const TextStyle(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: Color(0xFFFFA451),
-        ),
-        children: [
-          TextSpan(
-            text: price.value.toString(),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-        ],
       ),
     );
   }

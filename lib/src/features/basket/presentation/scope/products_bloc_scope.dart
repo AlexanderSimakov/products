@@ -15,7 +15,7 @@ class ProductsBlocScope extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => ProductsBloc(
-        productsInteractor: context.read<ProductsInteractor>(),
+        interactor: context.read<ProductsInteractor>(),
       ),
       child: child,
     );

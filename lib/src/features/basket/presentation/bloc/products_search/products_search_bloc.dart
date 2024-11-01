@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:bloc/bloc.dart';
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:product_basket/src/features/basket/domain/interactor/products_interactor.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
@@ -13,10 +14,10 @@ part 'products_search_state.dart';
 class ProductsSearchBloc
     extends Bloc<ProductsSearchEvent, ProductsSearchState> {
   ProductsSearchBloc({
-    required ProductsInteractor productsInteractor,
-  })  : _productsInteractor = productsInteractor,
+    required ProductsInteractor interactor,
+  })  : _interactor = interactor,
         super(
-          const ProductsSearchEmpty(
+          const ProductsSearchEmptyResult(
             filter: [],
             query: '',
           ),
@@ -33,20 +34,24 @@ class ProductsSearchBloc
           .debounceTime(const Duration(milliseconds: 200))
           .asyncExpand(mapper),
     );
-    on<_ProductsFetched>(_onProductsFetched);
+    on<_ProductsUpdated>(_onProductsFetched);
 
-    _productsSubscription = _productsInteractor.products.listen((products) {
-      add(_ProductsFetched(products));
+    _initListener();
+  }
+
+  final ProductsInteractor _interactor;
+  late final StreamSubscription<List<Product>> _productsSub;
+
+  void _initListener() {
+    _productsSub = _interactor.products.listen((products) {
+      add(_ProductsUpdated(products));
     });
   }
 
-  final ProductsInteractor _productsInteractor;
-  late final StreamSubscription<List<Product>> _productsSubscription;
-
   @override
   Future<void> close() async {
-    await _productsSubscription.cancel();
-    return super.close();
+    await _productsSub.cancel();
+    await super.close();
   }
 
   Future<void> _onProductSearchQueryChanged(
@@ -54,11 +59,11 @@ class ProductsSearchBloc
     Emitter<ProductsSearchState> emit,
   ) async {
     final products = _filterProducts(
-      products: _productsInteractor.products.value,
+      products: _interactor.products.value,
       filter: state.filter,
       query: event.query,
     );
-    _emitNewProducts(
+    _emitFoundProducts(
       emit,
       products: products,
       filter: state.filter,
@@ -71,11 +76,11 @@ class ProductsSearchBloc
     Emitter<ProductsSearchState> emit,
   ) async {
     final products = _filterProducts(
-      products: _productsInteractor.products.value,
+      products: _interactor.products.value,
       filter: event.filter,
       query: state.query,
     );
-    _emitNewProducts(
+    _emitFoundProducts(
       emit,
       products: products,
       filter: event.filter,
@@ -84,7 +89,7 @@ class ProductsSearchBloc
   }
 
   Future<void> _onProductsFetched(
-    _ProductsFetched event,
+    _ProductsUpdated event,
     Emitter<ProductsSearchState> emit,
   ) async {
     final products = _filterProducts(
@@ -92,7 +97,7 @@ class ProductsSearchBloc
       filter: state.filter,
       query: state.query,
     );
-    _emitNewProducts(
+    _emitFoundProducts(
       emit,
       products: products,
       filter: state.filter,
@@ -100,7 +105,7 @@ class ProductsSearchBloc
     );
   }
 
-  void _emitNewProducts(
+  void _emitFoundProducts(
     Emitter<ProductsSearchState> emit, {
     required List<Product> products,
     required List<Category> filter,
@@ -108,14 +113,14 @@ class ProductsSearchBloc
   }) {
     if (products.isEmpty) {
       emit(
-        ProductsSearchEmpty(
+        ProductsSearchEmptyResult(
           filter: filter,
           query: query,
         ),
       );
     } else {
       emit(
-        ProductsSearchLoaded(
+        ProductsSearchProductsFound(
           products: products,
           filter: filter,
           query: query,
@@ -129,6 +134,7 @@ class ProductsSearchBloc
     required List<Category> filter,
     required String query,
   }) {
+    // Don't show products until user has entered a query or selected a filter
     if (query.isEmpty && filter.isEmpty) {
       return [];
     }
@@ -136,6 +142,7 @@ class ProductsSearchBloc
     return products.where((product) {
       final matchesQuery = query.isEmpty ||
           product.name.toLowerCase().contains(query.toLowerCase());
+
       final matchesFilter = filter.isEmpty || filter.contains(product.category);
 
       return matchesQuery && matchesFilter;

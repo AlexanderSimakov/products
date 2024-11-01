@@ -1,22 +1,31 @@
 part of 'basket_bloc.dart';
 
 @immutable
-sealed class BasketEvent {
+sealed class BasketEvent with EquatableMixin {
   const BasketEvent();
+
+  @override
+  List<Object?> get props => [];
 }
 
 final class _BasketLoaded extends BasketEvent {
   const _BasketLoaded(this.basket);
 
   final Basket basket;
+
+  @override
+  List<Object?> get props => [basket];
 }
 
-final class AddToBasket extends BasketEvent {
-  const AddToBasket(this.product);
+final class BasketAddProduct extends BasketEvent {
+  const BasketAddProduct(this.product);
 
   final Product product;
+
+  @override
+  List<Object?> get props => [product];
 }
 
-final class ClearBasket extends BasketEvent {
-  const ClearBasket();
+final class BasketClear extends BasketEvent {
+  const BasketClear();
 }

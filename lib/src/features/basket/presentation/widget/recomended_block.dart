@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
-import 'package:product_basket/src/features/basket/presentation/widget/product_card.dart';
+import 'package:product_basket/src/features/basket/presentation/widget/product_card/product_card.dart';
+import 'package:product_basket/src/features/basket/presentation/widget/shimmer_product_list.dart';
 
 class RecomendedBlock extends StatelessWidget {
   const RecomendedBlock({
@@ -21,7 +22,13 @@ class RecomendedBlock extends StatelessWidget {
           ),
           child: Align(
             alignment: Alignment.centerLeft,
-            child: RecomendedTitle(),
+            child: Text(
+              'Recommended Combo',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
           ),
         ),
         SizedBox(
@@ -32,6 +39,10 @@ class RecomendedBlock extends StatelessWidget {
                 return state.recommendedProducts;
               },
               builder: (context, recommendedProducts) {
+                if (recommendedProducts.isEmpty) {
+                  return const ShimmerProductList();
+                }
+
                 return ListView.builder(
                   shrinkWrap: true,
                   scrollDirection: Axis.horizontal,
@@ -46,8 +57,8 @@ class RecomendedBlock extends StatelessWidget {
                       backgroundColor: Colors.white,
                       onFavoriteChanged: (isFavorite) {
                         context.read<ProductsBloc>().add(
-                              ToggleFavorite(
-                                id: recommendedProducts[index].id,
+                              ProductsToggleFavorite(
+                                recommendedProducts[index].id,
                                 isFavorite: isFavorite,
                               ),
                             );
@@ -60,23 +71,6 @@ class RecomendedBlock extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-}
-
-class RecomendedTitle extends StatelessWidget {
-  const RecomendedTitle({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      'Recommended Combo',
-      style: TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.w500,
-      ),
     );
   }
 }

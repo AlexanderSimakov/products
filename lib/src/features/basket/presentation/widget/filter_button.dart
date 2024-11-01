@@ -1,38 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product_basket/src/common/constants/app_assets.dart';
+import 'package:product_basket/src/common/widget/chip_multi_selector.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/presentation/utils/category_extension.dart';
-import 'package:product_basket/src/features/basket/presentation/widget/filter_modal.dart';
 
 class FilterButton extends StatelessWidget {
   const FilterButton({
     required this.onFilterChanged,
-    this.overridedOnTap,
     this.initialFilter,
     super.key,
   });
 
   final ValueChanged<List<Category>>? onFilterChanged;
-  final VoidCallback? overridedOnTap;
   final List<Category>? initialFilter;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: overridedOnTap ??
-          () async {
-            final categories = await FilterModal.show<Category>(
-              context: context,
-              values: Category.values,
-              title: 'Filter',
-              valueToString: (value) => value.toText(),
-              initialSelection: initialFilter ?? [],
-            );
-            if (categories != null) {
-              onFilterChanged?.call(categories);
-            }
-          },
+      onTap: () async {
+        final categories = await ChipMultiSelector.show<Category>(
+          context: context,
+          possibleValues: Category.values,
+          title: 'Filter',
+          toText: (value) => value.toText(),
+          selectedValues: initialFilter ?? [],
+        );
+        if (categories != null) {
+          onFilterChanged?.call(categories);
+        }
+      },
       child: SizedBox(
         height: 48,
         child: Stack(

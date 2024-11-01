@@ -8,6 +8,7 @@ environment:
 
 dependencies:
   bloc: ^8.1.4
+  cached_network_image: ^3.4.1
   equatable: ^2.0.5
   flutter:
     sdk: flutter
@@ -15,6 +16,7 @@ dependencies:
   flutter_svg: ^2.0.10+1
   meta: ^1.15.0
   rxdart: ^0.28.0
+  shimmer: ^3.0.0
 
 dev_dependencies:
   flutter_test:

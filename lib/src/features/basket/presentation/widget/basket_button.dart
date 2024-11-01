@@ -45,7 +45,7 @@ class BasketButton extends StatelessWidget {
                 if (state.basket.products.isEmpty) {
                   portalController.show();
                 } else {
-                  context.read<BasketBloc>().add(const ClearBasket());
+                  context.read<BasketBloc>().add(const BasketClear());
                 }
               },
               child: Stack(

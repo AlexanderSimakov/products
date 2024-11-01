@@ -1,20 +1,13 @@
 part of 'basket_bloc.dart';
 
 @immutable
-sealed class BasketState {
+sealed class BasketState with EquatableMixin {
   const BasketState(this.basket);
 
   final Basket basket;
 
   @override
-  int get hashCode => basket.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BasketState &&
-          runtimeType == other.runtimeType &&
-          basket == other.basket;
+  List<Object?> get props => [basket];
 }
 
 final class BasketInitial extends BasketState {
@@ -33,6 +26,9 @@ final class BasketProductAdded extends BasketState {
   const BasketProductAdded(super.basket, this.product);
 
   final Product product;
+
+  @override
+  List<Object?> get props => [basket, product];
 }
 
 final class BasketError extends BasketState {

@@ -1,25 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:product_basket/src/common/widget/app_chip.dart';
 
-class FilterModal<T> extends StatefulWidget {
-  const FilterModal._({
-    required this.values,
+class ChipMultiSelector<T> extends StatefulWidget {
+  const ChipMultiSelector._({
     required this.title,
-    required this.valueToString,
-    required this.initialSelection,
+    required this.possibleValues,
+    required this.toText,
+    this.selectedValues,
     super.key,
   });
 
-  final List<T> values;
   final String title;
-  final String Function(T value) valueToString;
-  final List<T> initialSelection;
+  final List<T> possibleValues;
+  final String Function(T value) toText;
+  final List<T>? selectedValues;
 
   static Future<List<T>?> show<T>({
     required BuildContext context,
-    required List<T> values,
     required String title,
-    required String Function(T value) valueToString,
-    List<T> initialSelection = const [],
+    required List<T> possibleValues,
+    required String Function(T value) toText,
+    List<T>? selectedValues,
   }) {
     return showModalBottomSheet<List<T>>(
       context: context,
@@ -31,11 +32,11 @@ class FilterModal<T> extends StatefulWidget {
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.circular(24),
           ),
-          child: FilterModal._(
-            values: values,
+          child: ChipMultiSelector._(
+            possibleValues: possibleValues,
             title: title,
-            valueToString: valueToString,
-            initialSelection: initialSelection,
+            toText: toText,
+            selectedValues: selectedValues,
           ),
         ),
       ),
@@ -43,16 +44,17 @@ class FilterModal<T> extends StatefulWidget {
   }
 
   @override
-  State<FilterModal<T>> createState() => _FilterModalState<T>();
+  State<ChipMultiSelector<T>> createState() => _ChipMultiSelectorState<T>();
 }
 
-class _FilterModalState<T> extends State<FilterModal<T>> {
+class _ChipMultiSelectorState<T> extends State<ChipMultiSelector<T>> {
   late final List<T> selectedValues;
 
   @override
   void initState() {
     super.initState();
-    selectedValues = [...widget.initialSelection];
+    selectedValues =
+        widget.selectedValues == null ? [] : [...widget.selectedValues!];
   }
 
   @override
@@ -61,7 +63,7 @@ class _FilterModalState<T> extends State<FilterModal<T>> {
       padding: const EdgeInsets.all(16),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             widget.title,
@@ -73,11 +75,12 @@ class _FilterModalState<T> extends State<FilterModal<T>> {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: widget.values.map((value) {
+            children: widget.possibleValues.map((value) {
               final isSelected = selectedValues.contains(value);
-              return _Chip(
+
+              return AppChip(
                 isSelected: isSelected,
-                text: widget.valueToString(value),
+                text: widget.toText(value),
                 onTap: () {
                   setState(() {
                     if (isSelected) {
@@ -109,49 +112,6 @@ class _FilterModalState<T> extends State<FilterModal<T>> {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _Chip extends StatelessWidget {
-  const _Chip({
-    required this.isSelected,
-    required this.text,
-    required this.onTap,
-  });
-
-  final bool isSelected;
-  final String text;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 6,
-        ),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? Theme.of(context).colorScheme.primary
-              : Colors.transparent,
-          borderRadius: BorderRadius.circular(20),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.primary,
-          ),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: isSelected
-                ? Theme.of(context).colorScheme.onPrimary
-                : Theme.of(context).colorScheme.primary,
-          ),
-        ),
       ),
     );
   }
