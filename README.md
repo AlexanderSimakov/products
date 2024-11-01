@@ -1,3 +1,6 @@
 # products
 
-[![Demo]](https://raw.githubusercontent.com/AlexanderSimakov/products/master/doc/demo.mp4)
+
+
+https://github.com/user-attachments/assets/5531d187-edf8-4fd4-9e1e-4685f66c3779
+
