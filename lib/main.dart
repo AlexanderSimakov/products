@@ -6,9 +6,9 @@ import 'package:product_basket/src/features/basket/data/repository/basket_reposi
 import 'package:product_basket/src/features/basket/data/repository/products_repository_impl.dart';
 import 'package:product_basket/src/features/basket/domain/interactor/basket_interactor.dart';
 import 'package:product_basket/src/features/basket/domain/interactor/products_interactor.dart';
-import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
-import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/page/basket_page.dart';
+import 'package:product_basket/src/features/basket/presentation/scope/basket_bloc_scope.dart';
+import 'package:product_basket/src/features/basket/presentation/scope/products_bloc_scope.dart';
 
 void main() {
   runApp(const MyApp());
@@ -42,20 +42,10 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.deepPurple,
           ),
         ),
-        home: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => ProductsBloc(
-                productsInteractor: context.read<ProductsInteractor>(),
-              ),
-            ),
-            BlocProvider(
-              create: (context) => BasketBloc(
-                interactor: context.read<BasketInteractor>(),
-              ),
-            ),
-          ],
-          child: const BasketPage(),
+        home: const ProductsBlocScope(
+          child: BasketBlocScope(
+            child: BasketPage(),
+          ),
         ),
       ),
     );

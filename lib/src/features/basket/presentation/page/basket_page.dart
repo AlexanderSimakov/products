@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:product_basket/src/features/basket/domain/interactor/basket_interactor.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:product_basket/src/common/constants/app_assets.dart';
+import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
+import 'package:product_basket/src/features/basket/presentation/page/search_page.dart';
+import 'package:product_basket/src/features/basket/presentation/scope/basket_bloc_scope.dart';
+import 'package:product_basket/src/features/basket/presentation/scope/products_bloc_scope.dart';
+import 'package:product_basket/src/features/basket/presentation/scope/products_search_bloc_scope.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/app_dialog.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/basket_button.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/custom_app_bar.dart';
@@ -27,46 +33,123 @@ class BasketPage extends StatelessWidget {
           );
         }
       },
-      child: const Scaffold(
+      child: Scaffold(
+        resizeToAvoidBottomInset: false,
         backgroundColor: Colors.white,
         appBar: CustomAppBar(
-          actions: [
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+                icon: SvgPicture.asset(
+                  AppAssets.appBarDrawerIcon,
+                  width: 22,
+                  height: 11,
+                ),
+              );
+            },
+          ),
+          actions: const [
             BasketButton(),
           ],
         ),
-        drawer: Drawer(),
+        drawer: const Drawer(),
         body: Padding(
-          padding: EdgeInsets.all(18),
+          padding: const EdgeInsets.all(18),
           child: Column(
             children: [
-              Padding(
+              const Padding(
                 padding: EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
                 child: GreetingText(name: 'Kante'),
               ),
-              Spacer(),
+              const Spacer(),
               Padding(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   horizontal: 25,
                 ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: SearchTextField(),
-                    ),
-                    SizedBox(width: 10),
-                    FilterButton(),
-                  ],
+                child: Hero(
+                  tag: 'search_bar',
+                  child: AppSearchBar(
+                    onTap: () {
+                      _openSearchPage(context);
+                    },
+                    overridedOnFilterTap: () {
+                      _openSearchPage(context);
+                    },
+                  ),
                 ),
               ),
-              Spacer(),
-              RecomendedBlock(),
-              Spacer(),
-              ProductByCategoryBlock(),
+              const Spacer(),
+              const RecomendedBlock(),
+              const Spacer(),
+              const ProductByCategoryBlock(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _openSearchPage(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute<void>(
+        builder: (context) {
+          return const ProductsBlocScope(
+            child: BasketBlocScope(
+              child: ProductsSearchBlocScope(
+                child: SearchPage(),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class AppSearchBar extends StatelessWidget {
+  const AppSearchBar({
+    this.onTap,
+    this.overridedOnFilterTap,
+    this.onSearchQueryChanged,
+    this.onSearchFilterChanged,
+    this.requestFocus = false,
+    this.initialFilter,
+    super.key,
+  });
+
+  final VoidCallback? onTap;
+  final VoidCallback? overridedOnFilterTap;
+  final ValueChanged<String>? onSearchQueryChanged;
+  final ValueChanged<List<Category>>? onSearchFilterChanged;
+  final List<Category>? initialFilter;
+  final bool requestFocus;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      type: MaterialType.transparency,
+      child: Row(
+        children: [
+          Expanded(
+            child: SearchTextField(
+              onChanged: onSearchQueryChanged,
+              onTap: onTap,
+              requestFocus: requestFocus,
+            ),
+          ),
+          const SizedBox(width: 10),
+          FilterButton(
+            initialFilter: initialFilter,
+            onFilterChanged: onSearchFilterChanged,
+            overridedOnTap: overridedOnFilterTap,
+          ),
+        ],
       ),
     );
   }
