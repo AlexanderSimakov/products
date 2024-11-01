@@ -31,10 +31,11 @@ class _SearchTextFieldState extends State<_SearchTextField> {
     return TextFormField(
       controller: _controller,
       onChanged: widget.onChanged,
+      onTapOutside: (_) => FocusScope.of(context).unfocus(),
       decoration: InputDecoration(
         prefixIconConstraints: const BoxConstraints.tightFor(
           height: 24,
-          width: 34,
+          width: 38,
         ),
         prefixIcon: SvgPicture.asset(
           AppAssets.searchSvgIcon,

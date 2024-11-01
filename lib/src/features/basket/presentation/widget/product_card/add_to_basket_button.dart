@@ -12,18 +12,15 @@ class _AddToBasketButton extends StatelessWidget {
     return SizedBox(
       height: 24,
       width: 24,
-      child: GestureDetector(
-        onTap: onTap,
-        child: DecoratedBox(
-          decoration: BoxDecoration(
-            color: const Color(0xFFFFF2E7),
-            borderRadius: BorderRadius.circular(24),
-          ),
-          child: Icon(
-            Icons.add,
-            size: 20,
-            color: context.colorScheme.primary,
-          ),
+      child: IconButton.filled(
+        onPressed: onTap,
+        icon: const Icon(Icons.add),
+        padding: EdgeInsets.zero,
+        constraints: const BoxConstraints(),
+        style: IconButton.styleFrom(
+          backgroundColor: const Color(0xFFFFF2E7),
+          foregroundColor: context.colorScheme.primary,
+          iconSize: 20,
         ),
       ),
     );

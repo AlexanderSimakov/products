@@ -5,7 +5,7 @@ class AppScaffold extends StatelessWidget {
     required this.body,
     this.appBar,
     this.drawer,
-    this.resizeToAvoidBottomInset = false,
+    this.resizeToAvoidBottomInset = true,
     super.key,
   });
 

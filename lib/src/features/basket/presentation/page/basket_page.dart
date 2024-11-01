@@ -22,6 +22,7 @@ class BasketPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return ProductAddedDialogScope(
       child: AppScaffold(
+        resizeToAvoidBottomInset: false,
         appBar: const CustomAppBar(
           leading: AppBarDrawerButton(),
           actions: [AppBarBasketButton()],

@@ -20,8 +20,8 @@ class _ProductCategoryListItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
+          AnimatedDefaultTextStyle(
+            duration: const Duration(milliseconds: 200),
             style: TextStyle(
               fontSize: isSelected ? 24 : 16,
               fontWeight: FontWeight.w500,
@@ -29,17 +29,16 @@ class _ProductCategoryListItem extends StatelessWidget {
                   ? context.colorScheme.onSurface
                   : context.colorScheme.onSurfaceVariant,
             ),
+            child: Text(title),
           ),
-          if (isSelected)
-            const DecoratedBox(
-              decoration: BoxDecoration(
-                color: Color(0xFFFFA451),
-              ),
-              child: SizedBox(
-                height: 3,
-                width: 36,
-              ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 300),
+            height: isSelected ? 3 : 0,
+            width: isSelected ? 36 : 0,
+            decoration: BoxDecoration(
+              color: context.colorScheme.primary,
             ),
+          ),
         ],
       ),
     );

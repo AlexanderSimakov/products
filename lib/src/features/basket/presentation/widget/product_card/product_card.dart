@@ -5,24 +5,24 @@ import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
+import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 part 'add_to_basket_button.dart';
 part 'product_price.dart';
+part 'product_favorite_button.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
     required this.product,
     required this.withShadow,
     required this.backgroundColor,
-    required this.onIsFavoriteChanged,
     super.key,
   });
 
   final Product product;
   final bool withShadow;
   final Color backgroundColor;
-  final ValueChanged<bool> onIsFavoriteChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -106,17 +106,16 @@ class ProductCard extends StatelessWidget {
                 ),
                 Align(
                   alignment: Alignment.topRight,
-                  child: GestureDetector(
-                    onTap: () {
-                      onIsFavoriteChanged(!product.isFavorite);
+                  child: _ProductFavoriteButton(
+                    onIsFavoriteChanged: (isFavorite) {
+                      context.read<ProductsBloc>().add(
+                            ProductsToggleFavorite(
+                              product.id,
+                              isFavorite: isFavorite,
+                            ),
+                          );
                     },
-                    child: Icon(
-                      product.isFavorite
-                          ? Icons.favorite
-                          : Icons.favorite_outline,
-                      color: const Color(0xFFFFA451),
-                      size: 24,
-                    ),
+                    isFavorite: product.isFavorite,
                   ),
                 ),
               ],

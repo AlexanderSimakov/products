@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:product_basket/src/common/extension/theme_extension.dart';
 import 'package:product_basket/src/features/basket/domain/model/product.dart';
-import 'package:product_basket/src/features/basket/presentation/bloc/products/products_bloc.dart';
 import 'package:product_basket/src/features/basket/presentation/widget/product_card/product_card.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -30,14 +28,6 @@ class ProductGrid extends StatelessWidget {
           key: ObjectKey(product),
           product: product,
           backgroundColor: context.colorScheme.surface,
-          onIsFavoriteChanged: (value) {
-            context.read<ProductsBloc>().add(
-                  ProductsToggleFavorite(
-                    product.id,
-                    isFavorite: value,
-                  ),
-                );
-          },
           withShadow: true,
         );
       },
