@@ -39,7 +39,7 @@ class FilterButton extends StatelessWidget {
           children: [
             Align(
               child: SvgPicture.asset(
-                AppAssets.filterIcon,
+                AppAssets.filterSvgIcon,
                 width: 24,
                 height: 24,
               ),

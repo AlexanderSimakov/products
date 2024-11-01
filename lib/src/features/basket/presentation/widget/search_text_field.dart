@@ -48,7 +48,7 @@ class _SearchTextFieldState extends State<SearchTextField> {
             width: 34,
           ),
           prefixIcon: SvgPicture.asset(
-            AppAssets.searchIcon,
+            AppAssets.searchSvgIcon,
             colorFilter: const ColorFilter.mode(
               Color(0xFF86869E),
               BlendMode.srcIn,

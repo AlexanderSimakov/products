@@ -10,9 +10,9 @@ class BasketInteractor {
 
   final BasketRepository _repository;
 
-  ValueStream<Basket> get basketStream => _repository.basketStream;
+  ValueStream<Basket> get basket => _repository.basket;
 
-  Future<void> addProduct(Product product) => _repository.addProduct(product);
+  Future<void> add(Product product) => _repository.add(product);
 
   Future<void> clear() => _repository.clear();
 }

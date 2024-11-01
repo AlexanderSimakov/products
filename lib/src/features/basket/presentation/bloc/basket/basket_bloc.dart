@@ -31,7 +31,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
   }
 
   void _initListener() {
-    _basketSubscription = _basketInteractor.basketStream.listen((basket) {
+    _basketSubscription = _basketInteractor.basket.listen((basket) {
       print('Basket: $basket');
       add(_BasketLoaded(basket));
     });
@@ -53,9 +53,9 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     try {
       emit(BasketProductAdded(state.basket, event.product));
 
-      await _basketInteractor.addProduct(event.product);
+      await _basketInteractor.add(event.product);
     } catch (e) {
-      emit(BasketError(_basketInteractor.basketStream.value));
+      emit(BasketError(_basketInteractor.basket.value));
       emit(BasketLoaded(state.basket));
     }
   }
@@ -67,7 +67,7 @@ class BasketBloc extends Bloc<BasketEvent, BasketState> {
     try {
       await _basketInteractor.clear();
     } catch (e) {
-      emit(BasketError(_basketInteractor.basketStream.value));
+      emit(BasketError(_basketInteractor.basket.value));
       emit(BasketLoaded(state.basket));
     }
   }

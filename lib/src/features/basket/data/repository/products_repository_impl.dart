@@ -11,20 +11,13 @@ class ProductsRepositoryImpl implements ProductsRepository {
   final ProductsDataSource _dataSource;
 
   @override
-  ValueStream<List<Product>> get productsStream => _dataSource.productsStream;
+  ValueStream<List<Product>> get products => _dataSource.products;
 
   @override
-  ValueStream<List<Product>> get recommendedProductsStream =>
-      _dataSource.recommendedProductsStream;
+  ValueStream<List<Product>> get recommendedProducts =>
+      _dataSource.recommendedProducts;
 
   @override
-  Future<void> toggleFavorite(
-    String id, {
-    required bool isFavorite,
-  }) {
-    return _dataSource.toggleFavorite(
-      id,
-      isFavorite: isFavorite,
-    );
-  }
+  Future<void> toggleFavorite(String id, {required bool isFavorite}) =>
+      _dataSource.toggleFavorite(id, isFavorite: isFavorite);
 }

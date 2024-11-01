@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:product_basket/src/common/constants/app_assets.dart';
-import 'package:product_basket/src/common/widget/popup.dart';
+import 'package:product_basket/src/common/widget/popup/popup.dart';
 import 'package:product_basket/src/features/basket/presentation/bloc/basket/basket_bloc.dart';
 
 class BasketButton extends StatelessWidget {
@@ -54,7 +54,7 @@ class BasketButton extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       SvgPicture.asset(
-                        AppAssets.basketIcon,
+                        AppAssets.basketSvgIcon,
                         width: 24,
                         height: 24,
                       ),

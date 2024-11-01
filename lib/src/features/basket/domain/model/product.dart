@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:product_basket/src/features/basket/domain/model/category.dart';
 import 'package:product_basket/src/features/basket/domain/model/price.dart';
 
 @immutable
-class Product {
+class Product with EquatableMixin {
   const Product({
     required this.id,
     required this.name,
@@ -39,23 +40,12 @@ class Product {
   }
 
   @override
-  int get hashCode =>
-      id.hashCode ^
-      name.hashCode ^
-      price.hashCode ^
-      imageUrl.hashCode ^
-      isFavorite.hashCode ^
-      category.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Product &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name &&
-          price == other.price &&
-          imageUrl == other.imageUrl &&
-          isFavorite == other.isFavorite &&
-          category == other.category;
+  List<Object?> get props => [
+        id,
+        name,
+        price,
+        imageUrl,
+        isFavorite,
+        category,
+      ];
 }

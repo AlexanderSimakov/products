@@ -44,7 +44,7 @@ class BasketPage extends StatelessWidget {
                   Scaffold.of(context).openDrawer();
                 },
                 icon: SvgPicture.asset(
-                  AppAssets.appBarDrawerIcon,
+                  AppAssets.appBarDrawerSvgIcon,
                   width: 22,
                   height: 11,
                 ),

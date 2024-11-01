@@ -7,14 +7,15 @@ class BasketDataSourceImpl implements BasketDataSource {
   BasketDataSourceImpl();
 
   @override
-  ValueStream<Basket> get basketStream => _basketSubject;
+  ValueStream<Basket> get basket => _basketSubject;
 
   final BehaviorSubject<Basket> _basketSubject =
       BehaviorSubject<Basket>.seeded(const Basket());
 
   @override
-  Future<void> addProduct(Product product) async {
-    await Future<void>.delayed(const Duration(milliseconds: 200));
+  Future<void> add(Product product) async {
+    await _simulateDelay();
+
     final basket = Basket([
       ..._basketSubject.value.products,
       product,
@@ -24,6 +25,11 @@ class BasketDataSourceImpl implements BasketDataSource {
 
   @override
   Future<void> clear() async {
+    await _simulateDelay();
+
     _basketSubject.add(const Basket());
   }
+
+  Future<void> _simulateDelay() =>
+      Future<void>.delayed(const Duration(milliseconds: 200));
 }

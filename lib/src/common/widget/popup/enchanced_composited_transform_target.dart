@@ -1,6 +1,6 @@
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:product_basket/src/common/widget/enchanced_composited_transform_follower.dart';
+// ignore_for_file: lines_longer_than_80_chars, one_member_abstracts, prefer_asserts_with_message, tighten_type_of_initializing_formals, comment_references
+
+part of 'popup.dart';
 
 /// A link that can be established between a [EnhancedCompositedTransformTarget] and a
 /// [EnhancedCompositedTransformFollower].
@@ -46,9 +46,9 @@ class EnhancedCompositedTransformTarget extends SingleChildRenderObjectWidget {
   /// The [link] property must not be currently used by any other
   /// [EnhancedCompositedTransformTarget] object that is in the tree.
   const EnhancedCompositedTransformTarget({
-    super.key,
     required this.link,
     super.child,
+    super.key,
   });
 
   /// The link object that connects this [EnhancedCompositedTransformTarget] with one or
@@ -65,7 +65,9 @@ class EnhancedCompositedTransformTarget extends SingleChildRenderObjectWidget {
 
   @override
   void updateRenderObject(
-      BuildContext context, EnhancedRenderLeaderLayer renderObject) {
+    BuildContext context,
+    EnhancedRenderLeaderLayer renderObject,
+  ) {
     renderObject.link = link;
   }
 }
@@ -99,7 +101,7 @@ class EnhancedRenderLeaderLayer extends RenderProxyBox {
     _link = value;
     _link.leaderRenderObject = this;
     if (_previousLayoutSize != null) {
-      _link.leaderSizeChanged(_previousLayoutSize!);
+      _link.leaderSizeChanged(_previousLayoutSize);
     }
     markNeedsPaint();
   }
@@ -126,8 +128,7 @@ class EnhancedRenderLeaderLayer extends RenderProxyBox {
     if (layer == null) {
       layer = LeaderLayer(link: link, offset: offset);
     } else {
-      final LeaderLayer leaderLayer = layer! as LeaderLayer;
-      leaderLayer
+      (layer! as LeaderLayer)
         ..link = link
         ..offset = offset;
     }

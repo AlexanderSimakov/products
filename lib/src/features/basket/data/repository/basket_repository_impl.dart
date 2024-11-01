@@ -12,10 +12,10 @@ class BasketRepositoryImpl implements BasketRepository {
   final BasketDataSource _dataSource;
 
   @override
-  ValueStream<Basket> get basketStream => _dataSource.basketStream;
+  ValueStream<Basket> get basket => _dataSource.basket;
 
   @override
-  Future<void> addProduct(Product product) => _dataSource.addProduct(product);
+  Future<void> add(Product product) => _dataSource.add(product);
 
   @override
   Future<void> clear() => _dataSource.clear();

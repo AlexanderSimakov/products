@@ -1,9 +1,13 @@
+// ignore_for_file: lines_longer_than_80_chars, one_member_abstracts, prefer_asserts_with_message, tighten_type_of_initializing_formals
+
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-import 'package:product_basket/src/common/widget/enchanced_composited_transform_follower.dart';
-import 'package:product_basket/src/common/widget/enchanced_composited_transform_target.dart';
+
+part 'enchanced_composited_transform_follower.dart';
+part 'enchanced_composited_transform_target.dart';
 
 /// A function that builds a widget with a controller.
 typedef PopupWidgetBuilder = Widget Function(
@@ -103,11 +107,14 @@ class Popup extends StatefulWidget {
   /// A [DisplayFeature] obstructs the screen when the area it occupies is
   /// not 0 or the `state` is [DisplayFeatureState.postureHalfOpened].
   static Iterable<Rect> findDisplayFeatureBounds(
-      List<DisplayFeature> features) {
+    List<DisplayFeature> features,
+  ) {
     return features
-        .where((DisplayFeature d) =>
-            d.bounds.shortestSide > 0 ||
-            d.state == DisplayFeatureState.postureHalfOpened)
+        .where(
+          (DisplayFeature d) =>
+              d.bounds.shortestSide > 0 ||
+              d.state == DisplayFeatureState.postureHalfOpened,
+        )
         .map((DisplayFeature d) => d.bounds);
   }
 
@@ -163,8 +170,8 @@ class _PopupState extends State<Popup> {
             enforceLeaderHeight: widget.enforceLeaderHeight,
             displayFeatureBounds: displayFeatureBounds,
             child: Builder(
-                builder: (context) =>
-                    widget.follower(context, portalController)),
+              builder: (context) => widget.follower(context, portalController),
+            ),
           ),
         ),
       ),
@@ -174,7 +181,9 @@ class _PopupState extends State<Popup> {
 
 /// Follower builder that wraps the child widget.
 typedef PopupFollowerBuilder = Widget Function(
-    BuildContext context, Widget? child);
+  BuildContext context,
+  Widget? child,
+);
 
 /// Handles for follower widgets.
 abstract interface class PopupFollowerController {
@@ -362,8 +371,10 @@ class FollowerScope extends InheritedWidget {
   }
 
   /// Returns the root [FollowerScope] instance.
-  static FollowerScope? findRootOf(BuildContext context,
-      {bool listen = false}) {
+  static FollowerScope? findRootOf(
+    BuildContext context, {
+    bool listen = false,
+  }) {
     var scope = maybeOf(context, listen: listen);
     while (scope?.parent != null) {
       scope = scope?.parent;

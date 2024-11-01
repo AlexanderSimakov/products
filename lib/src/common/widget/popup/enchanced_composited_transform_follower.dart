@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:product_basket/src/common/widget/enchanced_composited_transform_target.dart';
+// ignore_for_file: lines_longer_than_80_chars, one_member_abstracts, prefer_asserts_with_message, tighten_type_of_initializing_formals, comment_references
+
+part of 'popup.dart';
 
 /// A widget that follows a [CompositedTransformTarget].
 ///
@@ -147,7 +147,9 @@ class EnhancedCompositedTransformFollower
 
   @override
   void updateRenderObject(
-      BuildContext context, EnhancedRenderFollowerLayer renderObject) {
+    BuildContext context,
+    EnhancedRenderFollowerLayer renderObject,
+  ) {
     renderObject
       ..link = link
       ..showWhenUnlinked = showWhenUnlinked
@@ -453,22 +455,21 @@ class EnhancedRenderFollowerLayer extends RenderProxyBox {
   void paint(PaintingContext context, Offset offset) {
     final overlayRect = Offset.zero & constraints.biggest;
     final leaderRenderObject = link.leaderRenderObject;
-    Offset linkedOffset = Offset.zero;
+    var linkedOffset = Offset.zero;
 
     if (leaderRenderObject != null) {
       final leaderGlobalPosition =
           leaderRenderObject.localToGlobal(Offset.zero);
       final leaderSize = leaderRenderObject.size;
 
-      final Iterable<Rect> subScreens =
-          DisplayFeatureSubScreen.subScreensInBounds(
+      final subScreens = DisplayFeatureSubScreen.subScreensInBounds(
         overlayRect,
         displayFeatureBounds,
       );
 
       // TODO(mlazebny): figure out how to correctly treat allowedRect
       // ignore: unused_local_variable
-      final Rect allowedRect = _closestScreen(subScreens, leaderGlobalPosition);
+      final allowedRect = _closestScreen(subScreens, leaderGlobalPosition);
 
       linkedOffset =
           leaderAnchor.alongSize(leaderSize) - followerAnchor.alongSize(size);
@@ -525,14 +526,14 @@ class EnhancedRenderFollowerLayer extends RenderProxyBox {
     required EdgeInsets edgePadding,
     required bool flip,
   }) {
-    double dx = followerRect.left;
-    double dy = followerRect.top;
+    var dx = followerRect.left;
+    var dy = followerRect.top;
 
     // Effective screen area considering edge padding
-    final double leftBoundary = edgePadding.left;
-    final double topBoundary = edgePadding.top;
-    final double rightBoundary = screenSize.width - edgePadding.right;
-    final double bottomBoundary = screenSize.height - edgePadding.bottom;
+    final leftBoundary = edgePadding.left;
+    final topBoundary = edgePadding.top;
+    final rightBoundary = screenSize.width - edgePadding.right;
+    final bottomBoundary = screenSize.height - edgePadding.bottom;
 
     // Check for horizontal overflow
     if (flip) {
@@ -588,8 +589,8 @@ class EnhancedRenderFollowerLayer extends RenderProxyBox {
   }
 
   Rect _closestScreen(Iterable<Rect> screens, Offset point) {
-    Rect closest = screens.first;
-    for (final Rect screen in screens) {
+    var closest = screens.first;
+    for (final screen in screens) {
       if ((screen.center - point).distance <
           (closest.center - point).distance) {
         closest = screen;
@@ -606,10 +607,11 @@ class EnhancedRenderFollowerLayer extends RenderProxyBox {
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<LayerLink>('link', link));
     properties
-        .add(DiagnosticsProperty<bool>('showWhenUnlinked', showWhenUnlinked));
-    properties.add(
-        TransformProperty('current transform matrix', getCurrentTransform()));
+      ..add(DiagnosticsProperty<LayerLink>('link', link))
+      ..add(DiagnosticsProperty<bool>('showWhenUnlinked', showWhenUnlinked))
+      ..add(
+        TransformProperty('current transform matrix', getCurrentTransform()),
+      );
   }
 }

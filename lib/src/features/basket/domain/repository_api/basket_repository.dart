@@ -3,7 +3,7 @@ import 'package:product_basket/src/features/basket/domain/model/product.dart';
 import 'package:rxdart/rxdart.dart';
 
 abstract interface class BasketRepository {
-  ValueStream<Basket> get basketStream;
-  Future<void> addProduct(Product product);
+  ValueStream<Basket> get basket;
+  Future<void> add(Product product);
   Future<void> clear();
 }
