@@ -5,7 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:product_basket/src/features/basket/domain/interactor/basket_interactor.dart';
 import 'package:product_basket/src/features/basket/domain/model/basket.dart';
-import 'package:product_basket/src/features/basket/domain/model/product.dart';
+import 'package:product_basket/src/features/products/domain/model/product.dart';
 import 'package:rxdart/rxdart.dart';
 
 part 'basket_event.dart';
